@@ -1,0 +1,230 @@
+-- TABELAS --
+
+create table alunos(
+  MAT varchar(15) not null,
+  nome varchar(100),
+  cpf char(11),
+  sexo char(1),
+  data_nascimento date,
+  primary key(MAT));
+
+create table disciplinas(
+  COD_DISC varchar(10) not null,
+  nome varchar(60),
+  carga_hor int,
+  primary key(COD_DISC));
+
+create table coordenador (
+    COD_COOR varchar(10) not null,
+  nome varchar(100),
+  CPF_COOR char(11),
+  primary key(COD_COOR));
+
+create table professores(
+  COD_PROF varchar(10) not null,
+  nome varchar(100),
+  CPF_PROF char(11),
+  primary key(COD_PROF));
+  
+create table diretores (
+  COD_DIRETOR varchar(10) not null,
+  nome varchar(100),
+  CPF_DIRETOR char(11),
+  primary key(COD_DIRETOR));
+  
+create table departamento(
+  COD_DEPARTA varchar(10) not null,
+  nome varchar(100),
+    primary key(COD_DEPARTA));
+
+create table turma(
+  COD_DISC varchar(10) not null,
+  COD_TURMA integer not null,
+  COD_PROF varchar(10) not null,
+  ANO integer not null,
+  horario varchar(20),
+  primary key(COD_DISC, COD_TURMA, COD_PROF, ANO),
+  foreign key(COD_DISC) references disciplinas(COD_DISC),
+  foreign key(COD_PROF) references professores(COD_PROF));
+
+create table historico(
+  MAT varchar(15) not null,
+  COD_DISC varchar(10) not null,
+  COD_TURMA integer not null,
+  COD_PROF varchar(10) not null,
+  ANO integer not null,
+  frequencia integer not null,
+  nota float,
+  primary key(MAT, COD_DISC, COD_TURMA, COD_PROF, ANO),
+  foreign key(COD_DISC, COD_TURMA, COD_PROF, ANO) references turma(COD_DISC, COD_TURMA, COD_PROF, ANO),
+  foreign key(MAT) references alunos(MAT));
+  
+  create table funcionario_GENE (
+    COD_FUNCIO_GENE varchar(10) not null,
+    CPF_FUNCIO_GENE char (11),
+    nome_FUNCIO_GENE varchar (100),
+    primary key(COD_FUNCIO_GENE));
+
+  
+create table cargo(
+    COD_COOR varchar(10) not null,
+    COD_PROF varchar(10) not null,
+    COD_DIRETOR varchar(10) not null,
+    COD_FUNCIO_GENE varchar(10) not null,
+  primary key (COD_COOR,COD_PROF,COD_DIRETOR, COD_FUNCIO_GENE),
+  foreign key (COD_COOR) references coordenador (COD_COOR),
+  foreign key (COD_PROF) references professores (COD_PROF),
+  foreign key (COD_DIRETOR) references diretores (COD_DIRETOR),
+     foreign key (COD_FUNCIO_GENE) references funcionario_GENE (COD_FUNCIO_GENE));
+  
+create table curso(
+    nome_curso varchar(100),
+    COD_DEPARTA varchar(10) not null,
+    COD_PROF varchar(10) not null,
+    MAT varchar(15) not null,
+  primary key (COD_DEPARTA,COD_PROF,MAT),
+  foreign key (COD_DEPARTA) references departamento (COD_DEPARTA),
+  foreign key (COD_PROF) references professores (COD_PROF),
+  foreign key (MAT) references alunos (MAT));
+
+
+
+
+
+-- INSERTS --
+
+insert into alunos (MAT,nome,cpf,sexo,data_nascimento) values ('234567389012345','Jonatas','76584930923','M','06/11/2001');
+insert into alunos (MAT,nome,cpf,sexo,data_nascimento) values ('346487348758299','Gustavo','38475920002','M','02/01/1999');
+insert into alunos (MAT,nome,cpf,sexo,data_nascimento) values ('848923874938474','Maria','57482900123','F','07/04/2003');
+insert into alunos (MAT,nome,cpf,sexo,data_nascimento) values ('485879457984755','Flávia','11237689321','F','11/12/2003');  
+insert into alunos (MAT,nome,cpf,sexo,data_nascimento) values ('493274974274929','Manoel','11203984756','M','06/12/1997');
+
+insert into disciplinas values('BD', 'BANCO DE DADOS', '10');
+insert into disciplinas values('POO', 'PROGRAMAÇÃO COM ACESSO A BANCO DE DADOS','10');
+insert into disciplinas values('WEB', 'AUTORIA WEB', '23');
+insert into disciplinas values('LEARN', 'IA', '25');
+insert into disciplinas values('HTML', 'HTML5,PHP,JAVASCRIPT', '26');
+
+insert into coordenador (COD_COOR,nome,CPF_COOR) values ('0009834521','Valesca','00017345321');
+insert into coordenador (COD_COOR,nome,CPF_COOR) values ('1120938463','Gabriel','11236785490');
+insert into coordenador (COD_COOR,nome,CPF_COOR) values ('0938471234','Igor','33049587665');
+insert into coordenador (COD_COOR,nome,CPF_COOR) values ('0938471238','Carlos','33049587610');
+insert into coordenador (COD_COOR,nome,CPF_COOR) values ('0938471237','Luiz','33049587659');
+
+insert into professores (COD_PROF,nome,CPF_PROF) values ('0000283422','Vanessa','01203942103');
+insert into professores (COD_PROF,nome,CPF_PROF) values ('1232314782','Rhanda','01293928093');
+insert into professores (COD_PROF,nome,CPF_PROF) values ('7936482737','Clara','00000342319');
+insert into professores (COD_PROF,nome,CPF_PROF) values ('7936482739','Evandro','00000342316');
+insert into professores (COD_PROF,nome,CPF_PROF) values ('7936482736','Jhon','00000342314');
+
+insert into diretores (COD_DIRETOR,nome,CPF_DIRETOR) values ('1222343459','David','12344444444');
+insert into diretores (COD_DIRETOR,nome,CPF_DIRETOR) values ('3747487434','Matheus','65555555555');
+insert into diretores (COD_DIRETOR,nome,CPF_DIRETOR) values ('4292423423','Marcos','88888888888');
+insert into diretores (COD_DIRETOR,nome,CPF_DIRETOR) values ('4292423423','Alex','99999999999');
+insert into diretores (COD_DIRETOR,nome,CPF_DIRETOR) values ('4292423423','Gomes','88888888895');
+
+insert into departamento (COD_DEPARTA,nome) values ('4444344324','RH');
+insert into departamento (COD_DEPARTA,nome) values ('4488987979','Finaceiro');
+insert into departamento (COD_DEPARTA,nome) values ('0980989879','Vendas');
+insert into departamento (COD_DEPARTA,nome) values ('7678678678','Cursos');
+insert into departamento (COD_DEPARTA,nome) values ('5644554666','Conselho');
+
+insert into turma (COD_DISC,COD_TURMA,COD_PROF,ANO,horario) values ('BD','06','0000283422','2020','7');
+insert into turma (COD_DISC,COD_TURMA,COD_PROF,ANO,horario) values ('POO','61','1232314782','2019','8');
+insert into turma (COD_DISC,COD_TURMA,COD_PROF,ANO,horario) values ('WEB','34','7936482735','2021','10');
+insert into turma (COD_DISC,COD_TURMA,COD_PROF,ANO,horario) values ('LEARN','34','7936482739','2021','10');
+insert into turma (COD_DISC,COD_TURMA,COD_PROF,ANO,horario) values ('HTML','34','7936482736','2021','10');
+
+insert into historico (mat,cod_disc,cod_turma,cod_prof,ano,frequencia,nota) values ('234567389012345','BD','06','0000283422','2020','77','7');
+insert into historico (mat,cod_disc,cod_turma,cod_prof,ano,frequencia,nota) values ('346487348758299','WEB','34','7936482736','2021','90','10');
+insert into historico (mat,cod_disc,cod_turma,cod_prof,ano,frequencia,nota) values ('848923874938474','BD','06','0000283422','2020','85','9');
+insert into historico (mat,cod_disc,cod_turma,cod_prof,ano,frequencia,nota) values ('485879457984755','POO','61','1232314782','2019','67','6');
+insert into historico (mat,cod_disc,cod_turma,cod_prof,ano,frequencia,nota) values ('493274974274929','BD','06','0000283422','2020','78','7');
+
+insert into curso (nome_curso,cod_departa,cod_prof,mat) values ('Ciência da Computação','7678678678','0000283422','234567389012345');
+insert into curso (nome_curso,cod_departa,cod_prof,mat) values ('Ciência da Computação','7678678678','1232314782','485879457984755');
+insert into curso (nome_curso,cod_departa,cod_prof,mat) values ('Ciência da Computação','7678678678','7936482736','346487348758299');
+insert into curso (nome_curso,cod_departa,cod_prof,mat) values ('Ciência da Computação','7678678678','0000283422','848923874938474');
+insert into curso (nome_curso,cod_departa,cod_prof,mat) values ('Ciência da Computação','7678678678','0000283422','493274974274929');
+
+insert into funcionario_GENE (COD_FUNCIO_GENE,CPF_FUNCIO_GENE,nome_FUNCIO_GENE) values ('3242034094','12345678910','Ricardo');
+insert into funcionario_GENE (COD_FUNCIO_GENE,CPF_FUNCIO_GENE,nome_FUNCIO_GENE) values ('3422479782','09876543211','Evangelista');
+insert into funcionario_GENE (COD_FUNCIO_GENE,CPF_FUNCIO_GENE,nome_FUNCIO_GENE) values ('3422479783','09876543213','Cicéro');
+insert into funcionario_GENE (COD_FUNCIO_GENE,CPF_FUNCIO_GENE,nome_FUNCIO_GENE) values ('3422479784','09876543214','Marcos');
+insert into funcionario_GENE (COD_FUNCIO_GENE,CPF_FUNCIO_GENE,nome_FUNCIO_GENE) values ('3422479785','09876543215','Paulo');
+
+
+
+
+
+
+-- ALTERAÇÕES E EXCLUSÕES --
+
+UPDATE alunos
+SET MAT=123456789123456
+WHERE cpf='76584930923';
+DELETE FROM alunos
+WHERE nome='Jonatas';
+
+UPDATE disciplinas
+SET carga_horaria=15
+WHERE nome='BANCO DE DADOS';
+DELETE FROM disciplinas
+WHERE nome='BANCO DE DADOS';
+
+UPDATE coordenador
+SET COD_COOR=0987654321
+WHERE nome='Igor';
+DELETE FROM coordenador
+WHERE CPF_COOR='00017345321';
+
+UPDATE professores
+SET COD_PROF=6661666666
+WHERE nome='Vanessa';
+DELETE FROM professores
+WHERE CPF_PROF='00000342313';
+
+UPDATE diretores
+SET COD_DIRETOR=5555222288
+WHERE nome='David';
+DELETE FROM diretores
+WHERE CPF_DIRETOR='88888888888';
+
+UPDATE departamento
+SET COD_DEPARTA=0009994442
+WHERE nome='RH';
+DELETE FROM departamento
+WHERE nome='Finaceiro';
+
+UPDATE turma
+SET horario=9
+WHERE COD_DISC='BD';
+DELETE FROM turma
+WHERE COD_TURMA='61';
+
+UPDATE historico
+SET nota=0
+WHERE mat='346487348758299';
+DELETE FROM historico
+WHERE mat='493274974274929';
+
+UPDATE curso 
+SET mat=121212121212121
+WHERE cod_departa='7678678678';
+DELETE FROM curso
+WHERE cod_prof='0000283422';
+
+UPDATE funcionario_GENE
+SET COD_FUNCIO_GENE=0101010101
+WHERE nome_FUNCIO_GENE='Evangelista';
+DELETE FROM funcionario_GENE
+WHERE CPF_FUNCIO_GENE='12345678910';
+
+
+-- CONSULTAS --
+select nome, cpf
+from alunos
+union
+select
+COD_COOR,CPF_COOR
+from coordenador
